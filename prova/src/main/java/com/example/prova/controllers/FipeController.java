@@ -1,33 +1,41 @@
 package com.example.prova.controllers;
 
-import com.example.prova.services.FipeService;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
+import com.example.prova.services.FipeService;
+// Anotação que indica que esta classe é um controlador REST
 @RestController
 public class FipeController {
-
-    private final FipeService fipeService;
-
-    public FipeController(FipeService fipeService) {
-        this.fipeService = fipeService;
-    }
-
-    @GetMapping("/fipe/marcas")
-    public List<?> getMarcas() {
-        return fipeService.getMarcas();
-    }
-
-    @GetMapping("/fipe/marcas/{id}/modelos")
-    public List<?> getModelos(@PathVariable String id) {
-        return fipeService.getModelos(id);
-    }
-
-    @GetMapping("/fipe/marcas/{marcaId}/modelos/{modeloId}/anos/{ano}")
-    public List<?> getAnos(@PathVariable String marcaId, @PathVariable String modeloId, @PathVariable String ano) {
-        return fipeService.getAnos(marcaId, modeloId, ano);
-    }
+// Injeção de dependência do serviço FipeService
+@Autowired
+private FipeService fipeService;
+// Endpoint para consultar marcas
+@GetMapping("/consultarMarcas")
+public String consultarMarcas() {
+// Chama o método consultarMarcas do serviço FipeService
+return fipeService.consultarMarcas();
+}
+// Endpoint para consultar modelos de uma marca específica
+@GetMapping("/consultarModelos/{marca}")
+public String consultarModelos(@PathVariable int marca) {
+// Chama o método consultarModelos do serviço FipeService, passando a marca como parâmetro
+return fipeService.consultarModelos(marca);
+}
+// Endpoint para consultar anos de um modelo específico de uma marca específica
+@GetMapping("/consultarAnos/{marca}/{modelo}")
+public String consultarAnos(@PathVariable int marca, @PathVariable int modelo) {
+// Chama o método consultarAnos do serviço FipeService, passando a marca e o modelo como parâmetros
+return fipeService.consultarAnos(marca, modelo);
+}
+// Endpoint para consultar o valor de um modelo específico de uma marca específica em um ano específico
+@GetMapping("/consultarValor/{marca}/{modelo}/{ano}")
+public String consultarValor(@PathVariable int marca, @PathVariable int modelo, @PathVariable String ano) {
+// Chama o método consultarValor do serviço FipeService, passando a marca, o modelo e o ano como parâmetros
+return fipeService.consultarValor(marca, modelo, ano);
+}
 }
